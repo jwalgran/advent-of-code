@@ -13,20 +13,17 @@
 (defn step
   "Run instruction at pointer and return the new program and new pointer index."
   [program pointer]
-  (case (program pointer)
-    99 [program nil]
-    1 (let [xi (program (+ pointer 1))
-            x (program xi)
-            yi (program (+ pointer 2))
-            y (program yi)
-            i (program (+ pointer 3))]
-        [(assoc program i (+ x y)) (+ pointer 4)])
-    2 (let [xi (program (+ pointer 1))
-            x (program xi)
-            yi (program (+ pointer 2))
-            y (program yi)
-            i (program (+ pointer 3))]
-        [(assoc program i (* x y)) (+ pointer 4)])
+  (if (== (program pointer) 99)
+    [program nil]
+    (let [xi (program (+ pointer 1))
+          x (program xi)
+          yi (program (+ pointer 2))
+          y (program yi)
+          i (program (+ pointer 3))
+          op (case (program pointer)
+               1 +
+               2 *)]
+      [(assoc program i (op x y)) (+ pointer 4)])
     )
   )
 
