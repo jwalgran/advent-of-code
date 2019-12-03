@@ -43,8 +43,18 @@
 
 (defn run-patch
   "Run the input.txt program after applying the patch from the problem instructions."
+  ([] (run-patch 12 2))
+  ([noun verb]
+   (let [p (load-input)
+         newp (assoc (assoc p 1 noun) 2 verb)]
+     ((exec newp) 0)))
+  )
+
+(defn find-patch
+  "Find the noun and verb that result in 19690720"
   []
-  (let [p (load-input)
-        newp (assoc (assoc p 1 12) 2 2)]
-    ((exec newp) 0))
+  (let [patch-seq (for [noun (range 100)
+                        verb (range 100)]
+                    [noun verb (run-patch noun verb)])]
+    (first (drop-while (fn [[_ _ result]] (not= 19690720 result)) patch-seq)))
   )
