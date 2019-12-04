@@ -29,9 +29,28 @@
   (not-nil? (some (fn [[a b]] (= a b)) (digit-pairs number)))
   )
 
+(defn group-digits
+  "Split a number into strings of repeating digits."
+  [number]
+  (map first (re-seq #"(.)\1*" (str number)))
+  )
+
+(defn has-digit-pair?
+  "True if a digit appears exactly two times in a row at least once."
+  [number]
+  (not-nil? (some #(= 2 %) (map count (group-digits number))))
+  )
+
 (defn count-passwords
   "Solve the problem."
   []
   (count (->> (range 284639 748759)
               (filter digits-increase?)
               (filter digits-repeat?))))
+
+(defn count-passwords-with-pairs
+  "Solve the part 2 problem."
+  []
+  (count (->> (range 284639 748759)
+              (filter digits-increase?)
+              (filter has-digit-pair?))))
