@@ -49,16 +49,39 @@
    )
   )
 
+(defn distance-to-coord
+  "Find the distance of the first occurrence"
+  [coord wire]
+  (+ 1 (first (keep-indexed #(if (= coord %2) %1) wire)))
+  )
+
+(defn find-distances-to-intersections-in-input
+  "Find the points where the paths in the input file intersect."
+  []
+  (let [wires (map path-to-coordinates (load-input))
+        intersections (apply clojure.set/intersection (map set wires))]
+    (for [i intersections]
+      (map #(distance-to-coord i %1) wires))
+    )
+  )
+
 (defn find-intersections-in-input
   "Find the points where the paths in the input file intersect."
   []
   (apply clojure.set/intersection (map set (map path-to-coordinates (load-input))))
-)
+  )
 
 (defn abs [n] (max n (- n)))
 
-(defn find-closest-intersection-in-input
-  "Find the answer to the problem."
+(defn find-closest-intersection-in-input-manhattan
+  "Find the answer to part 1."
   []
   (apply min (map (fn [[x y]] (+ (abs x) (abs y))) (find-intersections-in-input)))
+  )
+
+(defn find-closest-intersection-in-input-along-wire
+  "Find the answer to part 2."
+  []
+  (apply min (map (fn [[x y]] (+ (abs x) (abs y)))
+                  (find-distances-to-intersections-in-input)))
   )
