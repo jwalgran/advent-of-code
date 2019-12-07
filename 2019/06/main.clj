@@ -29,20 +29,14 @@
   [dag [center moon]]
   (assoc dag moon center))
 
-(defn orbit-seq
-  ""
-  ([dag moon] (orbit-seq dag moon nil))
-  ([dag moon stop]
-   (lazy-seq (if (= moon stop) nil (cons (dag moon) (orbit-seq dag (dag moon) stop)))))
-  )
-
 (def not-nil? (complement nil?))
 
 (defn orbits
   ""
   ([dag moon] (orbits dag moon nil))
   ([dag moon stop]
-   (take-while not-nil? (orbit-seq dag moon stop)))
+   (take-while (fn [m] (and (not-nil? m) (not= m stop))) (iterate dag (dag moon)))
+   )
   )
 
 (defn count-orbits
@@ -74,16 +68,14 @@
 (defn distance
   ""
   [dag m1 m2 junction]
-  (+ -2 (count (orbits dag m1 junction)) (count (orbits dag m2 junction)))
+  (+ (count (orbits dag m1 junction)) (count (orbits dag m2 junction)))
   )
-
 
 (defn distances
   ""
   [dag m1 m2]
   (map (partial distance dag m1 m2) (common-orbits dag m1 m2))
   )
-
 
 (defn shortest-path-to-santa
   ""
