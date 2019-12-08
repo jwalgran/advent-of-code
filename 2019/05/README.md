@@ -50,3 +50,7 @@ It will then perform a series of diagnostic tests confirming that various parts 
 Finally, the program will output a diagnostic code and immediately halt. This final output isn't an error; an output followed immediately by a halt means the program finished. If all outputs were zero except the diagnostic code, the diagnostic program ran successfully.
 
 After providing 1 to the only input instruction and passing all the tests, what diagnostic code does the program produce?
+
+## Solution
+
+Your puzzle answer was 6745903.
