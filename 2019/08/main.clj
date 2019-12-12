@@ -29,10 +29,25 @@
                   (map vector (range) (input-layers))))
   )
 
-(defn solve
+(defn solve-part-1
   ""
   []
   (let [[i layer] (min-zero-layer (input-layers))
         counts (frequencies layer)]
     (* (counts 1) (counts 2)))
+  )
+
+(defn merge-layers
+  ""
+  [a b]
+  (map (fn [[aa bb]] (if (= aa 2) bb aa)) (map vector a b))
+  )
+
+(defn solve-part-2
+  ""
+  []
+  (map s/join
+       (partition width
+                  (map (fn [x] (if (= 0 x) " " "X"))
+                       (reduce merge-layers (input-layers)))))
   )
